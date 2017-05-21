@@ -9,7 +9,7 @@ RUN apt-get update && \
       g++ \
       git \
       libcurl4-gnutls-dev \
-      libcurl4-gnutls \
+      libcurl3-gnutls \
       libhpdf-dev \
       libhpdf-2.2.1 \
       libgdal-dev \
@@ -25,19 +25,19 @@ RUN apt-get update && \
       libcurl3 \
       libarmadillo7 \
       libwebp6 && \
-
+    # Install laszip library \
     git clone https://github.com/LASzip/LASzip.git /tmp/laszip && \
     cd /tmp/laszip && \
     git checkout e7065cbc5bdbbe0c6e50c9d93d1cd346e9be6778 && \
     mkdir /tmp/laszip/build && cd /tmp/laszip/build && \
     cmake -GNinja -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE="Release" .. && \
     ninja install && \
-
+    # Install laz-perf library \
     git clone https://github.com/hobu/laz-perf.git /tmp/laz-perf && \
     mkdir /tmp/laz-perf/build && cd /tmp/laz-perf/build && \
     cmake -GNinja -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE="Release" .. && \
     ninja install && \
-
+    # Install PDAL library \
     git clone https://github.com/PDAL/PDAL /tmp/pdal && \
     mkdir /tmp/pdal/build && cd /tmp/pdal/build && \
     cmake -GNinja \
@@ -52,12 +52,12 @@ RUN apt-get update && \
       -DCMAKE_BUILD_TYPE=Release \
       .. && \
     ninja install && \
-
+    # Install PRC PDAL plugin \
     git clone https://github.com/PDAL/PRC.git /tmp/prc && \
     mkdir /tmp/prc/build && cd /tmp/prc/build && \
     cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DPDAL_DIR=/usr/lib/pdal/cmake -DCMAKE_INSTALL_PREFIX=/usr .. && \
     ninja install && \
-
+    # Remove dev dependencies and source code \
     apt-get purge -y \
       cmake \
       ninja-build \
@@ -69,3 +69,5 @@ RUN apt-get update && \
       libcurl4-gnutls-dev && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* /tmp/*
+
+CMD ["/bin/bash"]

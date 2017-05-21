@@ -1,0 +1,19 @@
+sudo: required
+
+services:
+  - docker
+
+env:
+  global:
+    - DOCKER_IMAGE=fradelg/pdal
+
+install:
+  - npm install -g dockerlint
+
+before_script:
+  - dockerlint Dockerfile
+
+script:
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker image build -t DOCKER_IMAGE .
+  - docker image push DOCKER_IMAGE
