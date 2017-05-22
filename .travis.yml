@@ -10,10 +10,8 @@ env:
 install:
   - npm install -g dockerlint
 
-before_script:
-  - dockerlint Dockerfile
-
-script:
-  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker image build -t DOCKER_IMAGE .
-  - docker image push DOCKER_IMAGE
+after_success:
+  - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - docker image build -f Dockerfile -t $DOCKER_IMAGE:$TAG .
+  - docker image push $DOCKER_IMAGE:$TAG
