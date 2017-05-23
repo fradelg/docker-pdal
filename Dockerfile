@@ -48,11 +48,6 @@ RUN apt-get update && \
     mkdir /tmp/hexer/build && cd /tmp/hexer/build && \
     cmake -GNinja -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE="Release" .. && \
     ninja install && \
-    # Install CPD library \
-    git clone --depth 1 --branch v0.4.6 https://github.com/gadomski/fgt /tmp/fgt && \
-    mkdir /tmp/fgt/build && cd /tmp/fgt/build && \
-    cmake -GNinja -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=ON .. && \
-    ninja install && \
     # Install Fass Gaussian Transform library \
     git clone --depth 1 --branch v0.4.6 https://github.com/gadomski/fgt /tmp/fgt && \
     mkdir /tmp/fgt/build && cd /tmp/fgt/build && \
